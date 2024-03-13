@@ -5,20 +5,21 @@ import ApiConfig from '../../ApiConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Link, useNavigate } from 'react-router-dom';
+import { Box, Button, TextField, makeStyles } from '@mui/material';
+
 
 const SignUp = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-const navigate = useNavigate();
+    const navigate = useNavigate();
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
             const res = await Axios({
                 method: "POST",
                 url: ApiConfig.register,
-                responseType: 'json',
                 data: {
                     name: name,
                     email: email,
@@ -29,20 +30,18 @@ const navigate = useNavigate();
 
             if (res.status === 201) {
                 toast.success("user created successfully");
-                localStorage.setItem('email', JSON.stringify(email));
+                localStorage.setItem('user', JSON.stringify(res.data));
                 navigate("/login");
             }
-            else if (res.status === 400) {
-                toast.error(res.message); // Display error message from backend
-            }
-            // console.log(res);
             else {
                 toast.error("Something went wrong ")
             }
 
         } catch (error) {
-           console.log(error)
-
+            if (error.response.status === 400) {
+                // console.log(res.response.data.message);
+                toast.error(error.response.data.message); // Display error message from backend
+            }
         }
     };
 
@@ -53,29 +52,27 @@ const navigate = useNavigate();
                 handleFormSubmit(values);
             }}
             >
-                <input
-                    className='inputField'
+                <Box className='box'>
+                <TextField
+                    variant='outlined'
                     onChange={(e) => setName(e.target.value)}
-                    type="text"
-
                     placeholder="Enter Name"
                 />
-                <input
-                    className='inputField'
+                <TextField
+                    variant='outlined'
                     onChange={(e) => setEmail(e.target.value)}
-                    type="text"
-
                     placeholder="Enter Email"
                 />
-                <input
-                    className='inputField'
+                <TextField
+                    variant='outlined'
                     onChange={(e) => setPassword(e.target.value)}
                     type="password"
-
                     placeholder="Enter Password"
                 />
-                <input className='button' type="submit" value="Submit" />
-            </form>
+                <Button variant='contained' type="submit" value="Submit" >Submit</Button>
+          
+                </Box>
+               </form>
         </div>
     );
 };

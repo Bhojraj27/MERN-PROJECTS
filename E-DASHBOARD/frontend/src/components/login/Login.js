@@ -5,20 +5,21 @@ import ApiConfig from '../../ApiConfig';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
+import { Box, Button, TextField, makeStyles } from '@mui/material';
 
 const Login = () => {
-   
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-const navigate = useNavigate();
+    const navigate = useNavigate();
 
-useEffect(()=>{
-const auth= localStorage.getItem('email');
-if(auth){
-    navigate("/");
-}
-})
+    useEffect(() => {
+        const auth = localStorage.getItem('user');
+        if (auth) {
+            navigate("/");
+        }
+    })
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -27,15 +28,16 @@ if(auth){
                 url: ApiConfig.login,
                 responseType: 'json',
                 data: {
-                   email:email,
-                   password:password
+                    email: email,
+                    password: password
                 },
             });
 
             if (res.status === 200) {
                 toast.success(res.data.message);
-               navigate("/");
-               localStorage.setItem("email",JSON.stringify(email));
+                navigate("/");
+                localStorage.setItem("user", JSON.stringify(res.data.user));
+                localStorage.setItem("token", res.data.token);
             }
             else if (res.status === 400) {
                 toast.error(res.data.message); // Display error message from backend
@@ -58,23 +60,25 @@ if(auth){
                 handleFormSubmit(values);
             }}
             >
-                
-                <input
-                    className='inputField'
-                    onChange={(e) => setEmail(e.target.value)}
-                    type="text"
 
-                    placeholder="Enter Email"
-                />
-                <input
-                    className='inputField'
-                    onChange={(e) => setPassword(e.target.value)}
-                    type="password"
+                <Box className='box'>
 
-                    placeholder="Enter Password"
-                />
+                    <TextField
+                        variant='outlined'
+                        onChange={(e) => setEmail(e.target.value)}
+                        placeholder="Enter Email"
+                    />
+                    <TextField
+                        variant='outlined'
+                        onChange={(e) => setPassword(e.target.value)}
+                        type="password"
+                        placeholder="Enter Password"
+                    />
+                    <Button variant='contained' type="submit" value="Submit" >Submit</Button>
 
-                <input className='button' type="submit" value="Submit" />
+                </Box>
+
+
             </form>
         </div>
     );
