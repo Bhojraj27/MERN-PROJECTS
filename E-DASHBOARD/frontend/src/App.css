@@ -3,13 +3,15 @@
   flex-direction: column;
   min-height: 100vh !important;
 }
-
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 .content {
   flex: 1;
-margin-bottom: 30px !important;
+  margin-bottom: 30px !important;
 }
-
-
 
 /* Custom scrollbar styles */
 ::-webkit-scrollbar {
@@ -30,10 +32,10 @@ margin-bottom: 30px !important;
   background: #555;
 }
 
-
-.css-i4bv87-MuiSvgIcon-root{
+.css-i4bv87-MuiSvgIcon-root {
   font-size: medium !important;
 }
+
 .nav-ul {
   background-color: rgb(15, 104, 139);
   padding: 10px;
@@ -41,13 +43,31 @@ margin-bottom: 30px !important;
   border-bottom: 1px solid white;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
   z-index: 1000;
-  
+
   transition: opacity 0.5s ease;
   -webkit-transition: opacity 0.5s ease;
   -moz-transition: opacity 0.5s ease;
   -ms-transition: opacity 0.5s ease;
   -o-transition: opacity 0.5s ease;
 
+}
+
+.navbar {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: #fff;
+  /* Change this to your desired background color */
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  /* Add transitions for smooth appearance/disappearance */
+  z-index: 1000;
+}
+
+.navbar.hidden {
+  transform: translateY(-100%);
+  /* Move navbar out of view when hidden */
+  opacity: 0;
+  /* Hide navbar when hidden */
 }
 
 .nav-ul li {
@@ -64,26 +84,49 @@ margin-bottom: 30px !important;
   text-decoration: none;
 
 }
-.nav-ul li a:hover{
-  border-bottom: 3px solid #eeeeee;
+
+.nav-ul li a {
+  position: relative;
+}
+
+.nav-ul li a::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 3px;
+  background-color: #eeeeee;
+  transition: width 0.4s ease-in-out;
+}
+
+.nav-ul li a:hover::before {
+  width: 100%;
+}
+
+.nav-ul li a:hover {
   color: #eeeeee;
   text-decoration: none;
-  animation: all ease-in-out;
-  -webkit-animation: all ease-in-out;
+  transition: color 0.4s ease-in-out;
 }
-.addProduct{
+
+
+.addProduct {
   padding: 10px;
   margin: 0;
 }
-.nav-right{
+
+.nav-right {
   text-align: right;
 }
-.navlogo{
-  
-  float:left;
+
+.navlogo {
+
+  float: left;
   border-radius: 50%;
   margin-top: 3px;
 }
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

@@ -16,14 +16,15 @@ import Login from './components/login/Login';
 // Import ThemeProvider and createTheme
 import { ThemeProvider } from '@mui/material/styles';
 import { createTheme } from './theme/index.js'; // Adjust the path as needed
+import { Container } from '@mui/material';
 
 function App() {
   // Create a theme instance
-  const theme = createTheme();
+  // const theme = createTheme();
 
   return (
     <div className="App">
-          <ThemeProvider theme={theme}>
+ 
 
       <BrowserRouter>
         <ToastContainer />
@@ -44,7 +45,7 @@ function App() {
         </div>
         <Footer />
       </BrowserRouter>
-      </ThemeProvider>
+   
 
     </div>
   );

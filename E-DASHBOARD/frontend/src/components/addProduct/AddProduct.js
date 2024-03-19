@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Button, Container, TextField } from '@mui/material';
+import { Box, Button, Container, TextField, Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 import ApiConfig from '../../ApiConfig';
 import Axios from 'axios'; // Fixed Axios import
@@ -48,8 +48,11 @@ console.log(userId);
 
   return (
     <>
-      <h1>Add Product</h1>
-      
+     <Box mt={3} mb={3}>
+      <Typography variant="h2" color="primary">   
+      Add Products 
+        </Typography>
+        </Box>
       <Container maxWidth="xs">
         <Box className={classes.textBox}>
           <TextField

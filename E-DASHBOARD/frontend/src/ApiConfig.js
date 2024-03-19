@@ -4,7 +4,7 @@ const ApiConfig = {
     addProducts: `${url}/add-product`,
     login: `${url}/login`,
     logout: `${url}/logout`,
-    profile: `${url}/profile`,
+    profile: `${url}/getProfile`,
     products: `${url}/products`,
     update: `${url}/update`,
     delete: `${url}/delete`,  
