@@ -1,8 +1,12 @@
+// index.js
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { ThemeProvider } from '@mui/material/styles';
 import App from './App';
-import theme from './theme';
+import { createTheme } from './theme';
+
+const theme = createTheme({ theme: 'LIGHT', responsiveFontSizes: true });
 
 ReactDOM.render(
   <React.StrictMode>

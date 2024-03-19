@@ -74,29 +74,32 @@ const Login = () => {
   useEffect(() => {
     const auth = localStorage.getItem('user');
     if (auth) {
-      navigate("/dashboard");
+      navigate("/");
     }
   }, [navigate]);
 
   const handleFormSubmit = async (values) => {
+    
     try {
       setIsLoading(true);
       const res = await Axios.post(ApiConfig.login, {
         email: values.email,
         password: values.password
-      });
+      },
+      
+      );
 
       if (res.status === 200) {
         toast.success(res.data.message);
         localStorage.setItem("user", JSON.stringify(res.data.user));
-        localStorage.setItem("token", res.data.token);
-        navigate("/dashboard");
+        localStorage.setItem("token", JSON.stringify(res.data.token));
+        navigate("/");
       } else {
         toast.error(res.data.message || "Login failed");
       }
     } catch (error) {
       console.error("Error:", error);
-      toast.error("An error occurred during login");
+      toast.error(error.response.data.message );
     } finally {
       setIsLoading(false);
     }
@@ -145,7 +148,7 @@ const Login = () => {
                 </Box>
                 <Box>
                   <Box mt={2} mb={1}>
-                    <Typography variant="body2">Password</Typography>
+                    <Typography variant="body2" color="primary">Password</Typography>
                   </Box>
                   <TextField
                     fullWidth

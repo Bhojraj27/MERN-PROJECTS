@@ -25,7 +25,7 @@ app.post('/register', async (req, res) => {
       jwtKey,
       { expiresIn: '1h' }
     );
-    res.status(201).json({ message: 'User registered successfully', user: newUser, token});
+    res.status(201).json({ message: 'User registered successfully', user: newUser, token });
   } catch (error) {
     console.error('Error registering user:', error);
     res.status(500).json({ message: 'Internal server error' });
@@ -62,7 +62,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.post('/add-product', async (req, res) => {
+app.post('/add-product',verifyToken, async (req, res) => {
   let product = new Product(req.body);
   let result = await product.save();
   res.status(201).json({ message: 'Product added successfully', product: result });
@@ -123,6 +123,26 @@ app.get("/getProfile/:id", async (req, res) => {
   }
 });
 
+function verifyToken(req, res, next) {
+  let token = req.headers['authorization'];
+
+  if (!token) {
+    return res.status(403).send({ message: 'Please provide a token with the header' });
+  }
+
+  token = token.split(' ')[1]; 
+
+  jwt.verify(token, jwtKey, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({ success: false, message: 'Invalid token' });
+    }
+
+    // If the token is valid, you can optionally attach the decoded user information to the request object
+    req.user = decoded;
+
+    next(); // Proceed to the next middleware function
+  });
+}
 
 
 app.listen(4000, () => {

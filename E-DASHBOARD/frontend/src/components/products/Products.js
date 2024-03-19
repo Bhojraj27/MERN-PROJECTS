@@ -163,8 +163,8 @@ function Products() {
     <Container maxWidth="xlg"><Box mt={3} mb={3}>
       <Grid container spacing={2}>
         <Grid item xs={12} md={6}>
-          <Typography variant="h2" color="primary">
-            Coach Management
+          <Typography mb={4} variant="h4" color="primary">
+            Products Management
           </Typography>
         </Grid>
         {total < 10 ? (<Grid item xs={12} md={6} lg={6}>
@@ -235,20 +235,29 @@ function Products() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {data.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{index + 1}</TableCell>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>$ {item.price}</TableCell>
-                <TableCell>{item.category}</TableCell>
-                <TableCell>{item.company}</TableCell>
-                <TableCell>
-                  <IconButton className={classes.edit} onClick={() => handleDialogOpen(item._id, 'edit')}><Edit /></IconButton>
-                  <IconButton className={classes.delete} onClick={() => handleDialogOpen(item._id, 'delete')}><Delete /></IconButton>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+  {data.length > 0 ? (
+    data.map((item, index) => (
+      <TableRow key={index}>
+        <TableCell>{index + 1}</TableCell>
+        <TableCell>{item.name}</TableCell>
+        <TableCell>$ {item.price}</TableCell>
+        <TableCell>{item.category}</TableCell>
+        <TableCell>{item.company}</TableCell>
+        <TableCell>
+          <IconButton className={classes.edit} onClick={() => handleDialogOpen(item._id, 'edit')}><Edit /></IconButton>
+          <IconButton className={classes.delete} onClick={() => handleDialogOpen(item._id, 'delete')}><Delete /></IconButton>
+        </TableCell>
+      </TableRow>
+    ))
+  ) : (
+    <TableRow>
+      <TableCell colSpan={6}>
+        <Typography variant='h6' color="primary">No data Found</Typography>
+      </TableCell>
+    </TableRow>
+  )}
+</TableBody>
+
         </Table>
       </TableContainer>
       <DialogBoxCommon
