@@ -8,7 +8,7 @@ import { Box, Button, TextField, Typography, Paper, FormHelperText, InputAdornme
 import { Form, Formik } from 'formik';
 import { makeStyles } from '@mui/styles';
 import * as yup from "yup";
-import ButtonCircularProgress from '../ButtonCircularProgress';
+import ButtonCircularProgress from '../../components/ButtonCircularProgress';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const useStyles = makeStyles(() => ({

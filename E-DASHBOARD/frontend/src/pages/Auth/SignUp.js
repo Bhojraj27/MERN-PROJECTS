@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './signup.css'; // Corrected import statement
 import Axios from 'axios';
 import ApiConfig from '../../ApiConfig';
 import { toast } from 'react-toastify';
@@ -9,7 +8,7 @@ import { Box, Button, TextField, Typography, FormHelperText, InputAdornment, Ico
 import { Form, Formik } from 'formik';
 import { makeStyles } from '@mui/styles';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
-import ButtonCircularProgress from '../ButtonCircularProgress';
+import ButtonCircularProgress from '../../components/ButtonCircularProgress';
 import * as yup from "yup";
 
 const useStyles = makeStyles(() => ({
@@ -21,7 +20,7 @@ const useStyles = makeStyles(() => ({
         alignItems: "center",
         justifyContent: "center",
         overflowY: "auto",
-    },
+     },
     loginBox: {
         height: "initial",
         margin: "15px auto",

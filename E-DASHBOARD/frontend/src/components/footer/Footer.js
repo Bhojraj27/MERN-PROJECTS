@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     fontSize: "16px",
     lineHeight: "24px",
-    color: "#FBFBFB",
+    color: "#FBFBFB !important",
     cursor: "pointer",
     textTransform: "none",
     // marginRight: theme.spacing(2), // Add margin between buttons
@@ -40,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: 500,
     fontSize: "16px",
     lineHeight: "24px",
-    color: "#FBFBFB",
+    color: "#FBFBFB !important",
     cursor: "pointer",
     textTransform: "none",
   },

@@ -322,9 +322,9 @@ const themesOptions = [
         bannerBg: "#FFFFFF",
         pricebg: "#F9F9F9;",
       },
-      primary: {
-        main: "#000000", //black
-      },
+      // primary: {
+      //   main: "#007aff", //black
+      // },
       secondary: {
         main: "#212121", //black
         icons: "#009900", //white

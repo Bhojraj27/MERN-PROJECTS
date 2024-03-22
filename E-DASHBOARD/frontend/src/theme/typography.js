@@ -83,4 +83,4 @@ export default {
     letterSpacing: "0px",
     fontFamily: "'Poppins', sans-serif",
   },
-};
+ };

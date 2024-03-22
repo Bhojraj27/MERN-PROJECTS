@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import ApiConfig from '../../ApiConfig';
-import DialogBoxCommon from '../DialogBoxCommon';
+import DialogBoxCommon from '../../components/DialogBoxCommon';
 import { makeStyles, ThemeProvider } from '@mui/styles';
 import { Delete, Edit, Search } from '@mui/icons-material';
 import { Box, Button, Container, CssBaseline, FormControl, MenuItem, Pagination, Select } from '@mui/material';
@@ -46,6 +46,23 @@ const useStyles = makeStyles((theme) => ({
       padding: "30px",
     },
   },
+  forminputRows: {
+    flexDirection: "row",
+    justifyContent: "end",
+    alignItems: "center",
+    gap: "10px",
+    "& .textFeilds": {
+      border: "1.16355px solid #FFC002",
+      borderRadius: "3.49065px !important",
+      display: "flex",
+    },
+    "& .limitTextField": {
+      width: "100%",
+      borderRadius: "3.49065px !important",
+      height: "40px",
+    },
+
+  },
 }));
 
 function Products() {
@@ -55,8 +72,7 @@ function Products() {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogData, setDialogData] = useState({ id: '', data: {} });
   const [search, setSearch] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [NoOfPages, setNoOfPages] = useState(1);
   const [actionType, setActionType] = useState('');
   const [limit, setLimit] = useState(10);
   const [page, setPage] = useState(1);
@@ -69,13 +85,14 @@ function Products() {
         url: ApiConfig.products,
         params: {
           search: search,
-          page: currentPage,
-           lmit: limit,
+          page: page,
+          limit: limit,
         }
       });
       if (res.status === 200) {
         setData(res.data.products);
-        setTotalPages(res.data.totalPages);
+        setNoOfPages(res.data.totalPages);
+        setTotal(res.data.totalCount)
       } else {
         toast.warn('Something is wrong ');
       }
@@ -86,7 +103,7 @@ function Products() {
 
   useEffect(() => {
     userListHandler();
-  }, [search, currentPage,limit]);
+  }, [search, page, limit]);
 
 
   const deleteProduct = async (id) => {
@@ -155,73 +172,73 @@ function Products() {
 
 
   const handlePaginationChange = (event, value) => {
-    setCurrentPage(value);
+    setPage(value);
     userListHandler(value);
   };
-  
+
   return (
-    <Container maxWidth="xlg"><Box mt={3} mb={3}>
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={6}>
-          <Typography mb={4} variant="h4" color="primary">
-            Products Management
-          </Typography>
-        </Grid>
-        {total < 10 ? (<Grid item xs={12} md={6} lg={6}>
-          <FormControl variant="outlined" className={classes.forminputRows}>
-            <label style={{ color: "white", margin: "0px" }}>Rows:</label>
-            <Select
-              labelId="demo-simple-select-outlined-label"
-              id="demo-simple-select-outlined"
-              value={limit}
-              onChange={(e) => { setLimit(e.target.value); setPage(1); }}
-              label="Age"
-              className={`${classes.date} limitTextField`}
-              inputProps={{
-                classes: {
-                  icon: classes.icon,
-                },
-              }}
-            >
-              <MenuItem value={10}>10</MenuItem>
-              <MenuItem value={50}>50</MenuItem>
-              <MenuItem value={100}>100</MenuItem>
-              <MenuItem value={200}>200</MenuItem>
-            </Select>
-          </FormControl>
-        </Grid>) : " "}
-      </Grid>
-      <Paper elevation={2} sx={{ padding: 4 }}>
-        <Box className={classes.mainfilter}>
-          <Grid container spacing={1} alignItems="flex-end">
-            <Grid item xs={12} sm={6} md={3}>
-              <Typography color="primary">Search</Typography>
-              <TextField className={classes.TextBox}
-                variant="outlined"
-                placeholder="Search by name"
-                onChange={handleSearchChange}
-                value={search}
-                inputProps={{
-                  maxLength: 30,
-                  endAdornment: (
-                    <IconButton onClick={handleSearchSubmit}>
-                      <Search />
-                    </IconButton>
-                  ),
-                }}
-                fullWidth
-              />
+    <Container maxWidth="xlg">
+      <Box mt={3} mb={3}>
+        <Typography mb={4} variant="h4" color="primary">
+          Products Management
+        </Typography>
+        <Paper elevation={2} sx={{ padding: 4 }}>
+          <Box className={classes.mainfilter}>
+            <Grid container spacing={1} alignItems="flex-end">
+              <Grid item xs={12} sm={3} md={3}>
+                <Typography color="primary">Search</Typography>
+                <TextField className={classes.TextBox}
+                  variant="outlined"
+                  placeholder="Search by name"
+                  onChange={handleSearchChange}
+                  value={search}
+                  inputProps={{
+                    maxLength: 30,
+                    endAdornment: (
+                      <IconButton onClick={handleSearchSubmit}>
+                        <Search />
+                      </IconButton>
+                    ),
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              {total > 10 ? (
+                <Grid item xs={12} md={2} sm={3} >
+                  <Typography color="primary">Rows</Typography>
+                  <FormControl fullWidth variant="outlined" className={classes.forminputRows}>
+                    <Select
+                      labelId="demo-simple-select-outlined-label"
+                      id="demo-simple-select-outlined"
+                      value={limit}
+                      onChange={(e) => { setLimit(e.target.value); setPage(1); }}
+
+                      className={`${classes.date} limitTextField`}
+                      inputProps={{
+                        classes: {
+                          icon: classes.icon,
+                        },
+                      }}
+                    >
+                      <MenuItem value={10}>10</MenuItem>
+                      <MenuItem value={50}>50</MenuItem>
+                      <MenuItem value={100}>100</MenuItem>
+                      <MenuItem value={200}>200</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              ) : null}
+              <Grid item xs={12} sm={3} md={2}>
+                <Button sx={{ height: "40px" }} variant="contained" onClick={handleClear} fullWidth>Clear</Button>
+              </Grid>
+              <Grid item xs={12} sm={3} md={2}>
+                <Button sx={{ height: "40px" }} variant="contained" onClick={() => history("/add")} fullWidth>Add Product</Button>
+              </Grid>
+
             </Grid>
-            <Grid item xs={12} sm={4} md={2}>
-              <Button sx={{ height: "40px" }} variant="contained" onClick={handleClear} fullWidth>Clear</Button>
-            </Grid>
-            <Grid item xs={12} sm={4} md={2}>
-              <Button sx={{ height: "40px" }} variant="contained" onClick={() => history("/add")} fullWidth>Add Product</Button>
-            </Grid>
-          </Grid>
-        </Box>
-      </Paper>
-    </Box>
+          </Box>
+        </Paper>
+      </Box>
       <TableContainer mt={10} maxWidth="md" component={Paper} mb={10}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
@@ -235,28 +252,28 @@ function Products() {
             </TableRow>
           </TableHead>
           <TableBody>
-  {data.length > 0 ? (
-    data.map((item, index) => (
-      <TableRow key={index}>
-        <TableCell>{index + 1}</TableCell>
-        <TableCell>{item.name}</TableCell>
-        <TableCell>$ {item.price}</TableCell>
-        <TableCell>{item.category}</TableCell>
-        <TableCell>{item.company}</TableCell>
-        <TableCell>
-          <IconButton className={classes.edit} onClick={() => handleDialogOpen(item._id, 'edit')}><Edit /></IconButton>
-          <IconButton className={classes.delete} onClick={() => handleDialogOpen(item._id, 'delete')}><Delete /></IconButton>
-        </TableCell>
-      </TableRow>
-    ))
-  ) : (
-    <TableRow>
-      <TableCell colSpan={6}>
-        <Typography variant='h6' color="primary">No data Found</Typography>
-      </TableCell>
-    </TableRow>
-  )}
-</TableBody>
+            {data.length > 0 ? (
+              data.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{item.name}</TableCell>
+                  <TableCell>$ {item.price}</TableCell>
+                  <TableCell>{item.category}</TableCell>
+                  <TableCell>{item.company}</TableCell>
+                  <TableCell>
+                    <IconButton className={classes.edit} onClick={() => handleDialogOpen(item._id, 'edit')}><Edit /></IconButton>
+                    <IconButton className={classes.delete} onClick={() => handleDialogOpen(item._id, 'delete')}><Delete /></IconButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={6}>
+                  <Typography variant='h6' color="primary">No data Found</Typography>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
 
         </Table>
       </TableContainer>
@@ -267,14 +284,14 @@ function Products() {
         actionType={actionType}
         data={dialogData}
       />
-    <Pagination
-  count={totalPages}
-  page={currentPage}
-  onChange={handlePaginationChange}
-  color="primary"
-  sx={{ justifyContent: 'center', mt: 3 }}
-/>
-</Container>
+      {dialogData && NoOfPages > 1 && (<Pagination
+        count={NoOfPages}
+        page={page}
+        onChange={handlePaginationChange}
+        color="primary"
+        sx={{ justifyContent: 'center', mt: 3 }}
+      />)}
+    </Container>
 
 
 

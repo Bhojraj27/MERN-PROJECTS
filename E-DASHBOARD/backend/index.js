@@ -1,23 +1,56 @@
 const express = require('express');
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer'); // For sending emails
+const otpGenerator = require('otp-generator'); // For generating OTPs
+
 require('./db/config');
 const User = require('./db/user');
 const Product = require('./db/products');
+
 const app = express();
 const jwtKey = 'Ecomm'
 app.use(cors());
 app.use(express.json());
 
+
+
+// Implement the forgot password API
+// app.post('/send-email', async (req, res) => {
+//     // Send the OTP to the user's email
+//     const transporter = nodemailer.createTransport({
+//       host: 'gmail',
+//       port:587,
+//       auth: {
+//         user: 'bhojrajchavan5@gmail', // Your email
+//         pass: 'kptq ksxa baxh lofn' // Your email password
+//       }
+//     });
+
+//     const mailOptions = {
+//       from: ' "Bhojraj Chavan " <bhojrajchavan5@gmail.com', // Your email username
+//       to: 'bhojrajchavan5@gmail.com',
+//       subject: 'Password Reset OTP',
+//       text: `Your OTP for password reset is: `
+//     };
+
+//     transporter.sendMail(mailOptions, (error, info) => {
+//       if (error) {
+//         console.error('Error sending email:', error);
+//         return res.status(500).json({ message: 'Failed to send OTP via email' });
+//       }
+//       console.log('Email sent: ' + info.response);
+//       res.status(200).json({ message: 'OTP sent successfully' });
+//     });
+//   } );
+
 app.post('/register', async (req, res) => {
   try {
     const { name, email, password } = req.body;
-    // Check if user already exists with the given email
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'User already exists with this email' });
     }
-    // Create a new user
     const newUser = new User({ name, email, password });
     await newUser.save();
     const token = jwt.sign(
@@ -110,7 +143,7 @@ app.put('/update/:id', async (req, res) => {
 
 app.get("/getProfile/:id", async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.params.id }); // Assuming User model has id as _id field
+    const user = await User.findOne({ _id: req.params.id }); 
 
     if (!user) {
       return res.status(404).json({ message: "User not found" });
@@ -136,15 +169,13 @@ function verifyToken(req, res, next) {
     if (err) {
       return res.status(401).send({ success: false, message: 'Invalid token' });
     }
-
-    // If the token is valid, you can optionally attach the decoded user information to the request object
     req.user = decoded;
 
-    next(); // Proceed to the next middleware function
+    next(); 
   });
 }
 
 
 app.listen(4000, () => {
-  console.log('app is running on port 5000');
+  console.log('app is running on port 4000');
 });

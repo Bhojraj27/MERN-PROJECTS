@@ -10,7 +10,7 @@
 }
 .content {
   flex: 1;
-  margin-bottom: 30px !important;
+  /* background: linear-gradient(183deg, rgba(2,0,36,1) 21%, rgba(121,9,120,1) 100%); */
 }
 
 /* Custom scrollbar styles */
@@ -89,26 +89,32 @@
   position: relative;
 }
 
-.nav-ul li a::before {
+.navul {
+  position: relative;
+  text-decoration: none;
+}
+
+.navul::before {
   content: '';
   position: absolute;
   bottom: 0;
   left: 0;
   width: 0;
-  height: 3px;
+  height: 2px;
   background-color: #eeeeee;
   transition: width 0.4s ease-in-out;
 }
 
-.nav-ul li a:hover::before {
+.navul:hover::before {
   width: 100%;
 }
 
-.nav-ul li a:hover {
+.navul:hover {
   color: #eeeeee;
   text-decoration: none;
   transition: color 0.4s ease-in-out;
 }
+
 
 
 .addProduct {
